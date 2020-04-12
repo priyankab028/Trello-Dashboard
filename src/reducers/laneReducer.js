@@ -2,38 +2,42 @@ import { CONSTANTS } from "../actions";
 
 let laneID = 2;
 
-let cardID = 4
+let cardID = 6;
 
 const initialState = [
     {
         title: "Last Episode",
-        id: 0,
+        id: `lane-${0}`,
         cards: [
             {
-                id: 0,
+                id: `card-${0}`,
                 text: "create Static Lsit and Static Card"
             },
             {
-                id: 1,
+                id: `card-${1}`,
                 text: "create another component"
             }
         ]
     },
     {
         title: "This Episode",
-        id: 1,
+        id: `lane-${1}`,
         cards: [
             {
-                id: 0,
-                text: "create card 1"
+                id: `card-${2}`,
+                text: "create card 1",
             },
             {
-                id: 1,
+                id: `card-${3}`,
                 text: "create card 2"
             },
             {
-                id: 2,
+                id: `card-${4}`,
                 text: "create card 3"
+            },
+            {
+                id: `card-${5}`,
+                text: "create card 4"
             },
         ]
     }
@@ -45,7 +49,7 @@ const laneReducer = (state = initialState, action) => {
             const newLane = {
                 title: action.payload,
                 cards: [],
-                id: laneID
+                id: `lane-${laneID}`
             }
             laneID += 1
             return [...state, newLane];
@@ -54,7 +58,7 @@ const laneReducer = (state = initialState, action) => {
             const newCard = {
                 text: action.payload.text,
 
-                id: cardID
+                id: `card-${cardID}`
             };
             cardID += 1
             const newState = state.map(lane => {

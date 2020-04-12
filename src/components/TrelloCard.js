@@ -1,15 +1,26 @@
 import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import Button from './Button';
 
 import addIcon from '../assets/icons/add.svg';
 import Textarea from './Textarea';
 
-const TrelloCard = ({ text }) => {
-    return (
-        <div style={styles.cardWrapper}>
-            <h3>{text}</h3>
 
-        </div>
+
+const TrelloCard = ({ text, id, index }) => {
+    return (
+        <Draggable draggableId={String(id)} index={index}>
+            {provided => (
+                <div {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>
+                    <div style={styles.cardWrapper}>
+                        <h3>{text}</h3>
+
+                    </div>
+                </div>
+            )
+            }
+        </Draggable >
+
     )
 }
 

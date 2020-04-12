@@ -1,17 +1,27 @@
 import React from 'react';
+import { Droppable } from 'react-beautiful-dnd';
+
 import TrelloCard from './TrelloCard';
 import TrelloActionButton from './TrelloActionButton';
 import laneReducer from '../reducers/laneReducer';
 
+
 const TrelloLane = ({ title, cards, laneID }) => {
     return (
-        <div style={styles.container}>
-            <h4>{title}</h4>
-            {cards.map(card => (
-                <TrelloCard key={card.id} text={card.text} />
-            ))}
-            <TrelloActionButton laneID={laneID} />
-        </div>
+        <Droppable droppableId={String(laneID)}>
+            {provided => (
+
+                <div  {...provided.droppableProps} ref={provided.innerRef} style={styles.container}>
+                    <h4>{title}</h4>
+                    {cards.map((card, index) => (
+                        <TrelloCard key={card.id} id={card.id} text={card.text} index={index} />
+                    ))}
+                    <TrelloActionButton laneID={laneID} />
+                    {provided.placeholder}
+                </div>
+
+            )}
+        </Droppable>
 
     )
 }
