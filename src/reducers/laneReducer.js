@@ -84,12 +84,30 @@ const laneReducer = (state = initialState, action) => {
             } = action.payload;
 
             const newState = [...state];
+
+            // to drop/move into same list
             if (droppableIdStart === droppableIdEnd) {
                 const lane = state.find(lane => droppableIdStart === lane.id);
                 const card = lane.cards.splice(droppableIndexStart, 1);
                 lane.cards.splice(droppableIndexEnd, 0, ...card)
             }
+
+            // to drop/move into another list
+            if (droppableIdStart !== droppableIdEnd) {
+                // to get the lane where the drag occured
+                const laneStart = state.find(lane => droppableIdStart === lane.id);
+                // pull out the card from this lane
+                const card = laneStart.cards.splice(droppableIndexStart, 1);
+
+
+                // to get  the lane where the drag ended
+                const laneEnd = state.find(lane => droppableIdEnd === lane.id);
+
+                // to put the card in the new lane
+                laneEnd.cards.splice(droppableIndexEnd, 0, ...card);
+            }
             return newState;
+
 
         default:
             return state;
