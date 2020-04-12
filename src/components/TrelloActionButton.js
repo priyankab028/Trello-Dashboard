@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import addIcon from '../assets/icons/add.svg';
 import closeIcon from '../assets/icons/close.svg';
 import Button from './Button';
 import Card from './Card';
 import Textarea from 'react-textarea-autosize';
+import { addLane, addCard } from '../actions'
 
 
 export class TrelloActionButton extends Component {
@@ -43,6 +45,27 @@ export class TrelloActionButton extends Component {
         )
     };
 
+    handleInputChange = e => {
+        this.setState({
+            text: e.target.value
+        });
+    };
+    handleAddLane = () => {
+        const { dispatch } = this.props;
+        const { text } = this.state;
+        if (text) {
+            dispatch(addLane(text));
+        }
+        return;
+    };
+    handleAddCard = () => {
+        const { dispatch, laneID } = this.props;
+        const { text } = this.state;
+        if (text) {
+            dispatch(addCard(laneID, text));
+        }
+        return;
+    };
     renderForm = () => {
 
         const { lane } = this.props;
@@ -56,10 +79,11 @@ export class TrelloActionButton extends Component {
                 <Textarea style={styles.textArea} placeholder={placeholder} autoFocus onBlur={this.closeForm} onChange={this.handleInputChange} />
                 <div style={styles.buttonGroup}>
                     <Button
+                        handleMouseDown={lane ? this.handleAddLane : this.handleAddCard}
                         handleClick={this.openForm}
                         label={buttonTitle}
                         type="secondary"
-                        lane
+
                     />
                     <Button
                         handleClick={this.openForm}
@@ -71,11 +95,6 @@ export class TrelloActionButton extends Component {
         </div>)
     };
 
-    handleInputChange = e => {
-        this.setState({
-            text: e.target.value
-        });
-    }
 
     render() {
         return (
@@ -83,6 +102,8 @@ export class TrelloActionButton extends Component {
         )
     }
 };
+
+
 
 const styles = {
     actionButton: {
@@ -113,4 +134,4 @@ const styles = {
     }
 };
 
-export default TrelloActionButton
+export default connect()(TrelloActionButton)

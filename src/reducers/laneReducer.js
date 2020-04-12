@@ -1,3 +1,9 @@
+import { CONSTANTS } from "../actions";
+
+let laneID = 2;
+
+let cardID = 4
+
 const initialState = [
     {
         title: "Last Episode",
@@ -35,6 +41,33 @@ const initialState = [
 
 const laneReducer = (state = initialState, action) => {
     switch (action.type) {
+        case CONSTANTS.ADD_LANE:
+            const newLane = {
+                title: action.payload,
+                cards: [],
+                id: laneID
+            }
+            laneID += 1
+            return [...state, newLane];
+
+        case CONSTANTS.ADD_CARD:
+            const newCard = {
+                text: action.payload.text,
+
+                id: cardID
+            };
+            cardID += 1
+            const newState = state.map(lane => {
+                if (lane.id === action.payload.laneID) {
+                    return {
+                        ...lane,
+                        cards: [...lane.cards, newCard]
+                    };
+                } else {
+                    return lane;
+                }
+            });
+            return newState;
 
         default:
             return state;

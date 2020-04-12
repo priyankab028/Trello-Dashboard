@@ -4,7 +4,7 @@ function Button(props) {
     const className = `button ${props.type}`;
 
     return (
-        <button className={className} onClick={props.handleClick}>
+        <button className={className} onClick={props.handleClick} onMouseDown={props.handleMouseDown} >
             {props.icon && props.icon} {props.label && props.label}
         </button>
     );

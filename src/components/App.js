@@ -11,7 +11,7 @@ function App(props) {
     <div className="App">
       <div style={styles.laneWrapper}>
         {lanes.map(lane => (
-          <TrelloLane key={lane.id} title={lane.title} cards={lane.cards} />
+          <TrelloLane laneID={lane.id} key={lane.id} title={lane.title} cards={lane.cards} />
 
         ))}
         <TrelloActionButton lane />
