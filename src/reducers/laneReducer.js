@@ -54,7 +54,7 @@ const laneReducer = (state = initialState, action) => {
             laneID += 1
             return [...state, newLane];
 
-        case CONSTANTS.ADD_CARD:
+        case CONSTANTS.ADD_CARD: {
             const newCard = {
                 text: action.payload.text,
 
@@ -71,6 +71,24 @@ const laneReducer = (state = initialState, action) => {
                     return lane;
                 }
             });
+            return newState;
+        }
+
+        case CONSTANTS.DRAG_OCCURED:
+            const {
+                droppableIdStart,
+                droppableIdEnd,
+                droppableIndexStart,
+                droppableIndexEnd,
+                draggableId
+            } = action.payload;
+
+            const newState = [...state];
+            if (droppableIdStart === droppableIdEnd) {
+                const lane = state.find(lane => droppableIdStart === lane.id);
+                const card = lane.cards.splice(droppableIndexStart, 1);
+                lane.cards.splice(droppableIndexEnd, 0, ...card)
+            }
             return newState;
 
         default:
