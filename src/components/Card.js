@@ -1,14 +1,11 @@
-import React from 'react';
-import Button from './Button';
+import React, { Children } from 'react';;
 
-import addIcon from '../assets/icons/add.svg';
-import Textarea from './Textarea';
 
-const TrelloCard = ({ text }) => {
+
+const Card = ({ children }) => {
     return (
-        <div style={styles.cardWrapper}>
-            <h3>{text}</h3>
-
+        <div style={styles.cardwrapper}>
+            {children}
         </div>
     )
 }
@@ -25,7 +22,15 @@ const styles = {
         maxWidth: "250px",
         marginBottom: "7px",
         minWidth: "230px"
+    },
+    cardHeader: {
+
+    },
+    cardContent: {
+
     }
 }
 
-export default TrelloCard;
+export default Card;
+
+

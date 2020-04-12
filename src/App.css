@@ -1,3 +1,27 @@
 body {
     background: #3179ba
 }
+.button {
+  font-size: 16px;
+  padding: 12px;
+  background-color: #61aef7;
+  color: #fff;
+  border-radius: 3px;
+  display: flex;
+  height: 40px;
+  margin-top:5px
+
+}
+
+.button.primary {
+  background-color: #0886ff;
+}
+
+.button.secondary {
+  background-color: #73a800;
+}
+.button.tertiary {
+    background-color: transparent;
+    color: #333;
+    border: 0
+}

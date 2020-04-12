@@ -1,11 +1,15 @@
 import React from 'react';
 import TrelloCard from './TrelloCard';
+import TrelloActionButton from './TrelloActionButton';
 
-const TrelloLane = ({ title }) => {
+const TrelloLane = ({ title, cards }) => {
     return (
         <div style={styles.container}>
             <h4>{title}</h4>
-            <TrelloCard />
+            {cards.map(card => (
+                <TrelloCard key={card.id} text={card.text} />
+            ))}
+            <TrelloActionButton />
         </div>
 
     )
@@ -29,7 +33,7 @@ const styles = {
         WebkitFlexDirection: "column",
         msFlexDirection: "column",
         flexDirection: "column",
-        width: "270px"
+
     }
 }
 
