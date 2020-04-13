@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { DragDropContext } from "react-beautiful-dnd";
+import styled from "styled-components";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import TrelloLane from './TrelloLane';
 import TrelloActionButton from './TrelloActionButton';
 import { sort } from '../actions';
 
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: row;`;
+
 export class App extends Component {
   onDragEnd = (result) => {
 
-    const { destination, source, draggableId } = result;
+    const { destination, source, draggableId, type } = result;
     if (!destination) {
       return;
     }
@@ -18,7 +24,8 @@ export class App extends Component {
         destination.droppableId,
         source.index,
         destination.index,
-        draggableId
+        draggableId,
+        type
       )
     );
   };
@@ -26,15 +33,27 @@ export class App extends Component {
     const { lanes } = this.props
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <div className="App">
-          <div style={styles.laneWrapper}>
-            {lanes.map(lane => (
-              <TrelloLane laneID={lane.id} key={lane.id} title={lane.title} cards={lane.cards} />
-
-            ))}
-            <TrelloActionButton lane />
-          </div>
-        </div>
+        <h2>Hello Youtube</h2>
+        <Droppable droppableId="all-lanes" direction="horizontal" type="lane">
+          {provided => (
+            <MainWrapper
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {lanes.map((lane, index) => (
+                <TrelloLane
+                  laneID={lane.id}
+                  key={lane.id}
+                  title={lane.title}
+                  cards={lane.cards}
+                  index={index}
+                />
+              ))}
+              {provided.placeholder}
+              <TrelloActionButton lane />
+            </MainWrapper>
+          )}
+        </Droppable>
       </DragDropContext>
     )
   }

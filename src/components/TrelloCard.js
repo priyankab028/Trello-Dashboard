@@ -1,42 +1,88 @@
-import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import Button from './Button';
+import React, { useState } from "react";
+import Card from "@material-ui/core/Card";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import Icon from "@material-ui/core/Icon";
+import Typography from "@material-ui/core/Typography";
+import CardContent from "@material-ui/core/CardContent";
+import { Draggable } from "react-beautiful-dnd";
+import EditIcon from '@material-ui/icons/Edit';
+import TrelloForm from "./TrelloForm";
+import { editCard } from "../actions";
 
-import addIcon from '../assets/icons/add.svg';
-import Textarea from './Textarea';
+const CardContainer = styled.div`
+  margin: 0 0 8px 0;
+  position: relative;
+`;
 
+const EditButton = styled(Icon)`
+  position: absolute;
+  display: none;
+  right: 5px;
+  top: 5px;
+  opacity: 0.5;
+  ${CardContainer}:hover & {
+    display: block;
+    cursor: pointer;
+  }
+  &:hover {
+    opacity: 0.8;
+  }
+`;
 
+const TrelloCard = ({ text, id, laneID, index, dispatch }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [cardText, setText] = useState(text);
 
-const TrelloCard = ({ text, id, index }) => {
+  const closeForm = e => {
+    setIsEditing(false);
+  };
+
+  const saveCard = e => {
+    e.preventDefault();
+    dispatch(editCard(id, laneID, cardText));
+    setIsEditing(false);
+  };
+
+  const renderEditForm = () => {
     return (
-        <Draggable draggableId={String(id)} index={index}>
-            {provided => (
-                <div {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>
-                    <div style={styles.cardWrapper}>
-                        <h3>{text}</h3>
+      <TrelloForm
+        text={cardText}
+        setText={setText}
+        closeForm={closeForm}
+        actionButtonClicked={saveCard}
+      />
+    );
+  };
 
-                    </div>
-                </div>
-            )
-            }
-        </Draggable >
+  const renderCard = () => {
+    return (
+      <Draggable draggableId={String(id)} index={index}>
+        {provided => (
+          <CardContainer
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            onDoubleClick={() => setIsEditing(true)}
+          >
+            <Card>
+              <EditButton
+                onMouseDown={() => setIsEditing(true)}
 
-    )
-}
+              >
+                <EditIcon fontSize="small" />
+              </EditButton>
+              <CardContent>
+                <Typography>{text}</Typography>
+              </CardContent>
+            </Card>
+          </CardContainer>
+        )}
+      </Draggable>
+    );
+  };
 
-const styles = {
+  return isEditing ? renderEditForm() : renderCard();
+};
 
-    cardWrapper: {
-        borderRadius: "3px",
-        borderBottom: "1px solid #ccc",
-        backgroundColor: "#fff",
-        position: "relative",
-        padding: "10px",
-        cursor: "pointer",
-        maxWidth: "250px",
-        marginBottom: "7px",
-        minWidth: "230px"
-    }
-}
-
-export default TrelloCard;
+export default connect()(TrelloCard);

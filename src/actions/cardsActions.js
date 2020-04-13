@@ -6,3 +6,9 @@ export const addCard = (laneID, text) => {
         payload: { text, laneID }
     };
 };
+export const editCard = (id, laneID, newText) => {
+    return {
+        type: CONSTANTS.EDIT_CARD,
+        payload: { id, laneID, newText }
+    };
+};

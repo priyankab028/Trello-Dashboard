@@ -1,51 +1,51 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from "react-beautiful-dnd";
+import styled from "styled-components";
 
 import TrelloCard from './TrelloCard';
 import TrelloActionButton from './TrelloActionButton';
-import laneReducer from '../reducers/laneReducer';
 
+const LaneContainer = styled.div`
+  background-color: #dfe3e6;
+  border-radius: 3px;
+  width: 300px;
+  padding: 8px;
+  height: 100%;
+  margin: 0 8px 0 0;
+`;
 
-const TrelloLane = ({ title, cards, laneID }) => {
+const Trellolane = ({ title, cards, laneID, index }) => {
     return (
-        <Droppable droppableId={String(laneID)}>
+        <Draggable draggableId={String(laneID)} index={index}>
             {provided => (
+                <LaneContainer
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                >
+                    <Droppable droppableId={String(laneID)} type="card">
+                        {provided => (
+                            <div {...provided.droppableProps} ref={provided.innerRef}>
+                                <h4>{title}</h4>
 
-                <div  {...provided.droppableProps} ref={provided.innerRef} style={styles.container}>
-                    <h4>{title}</h4>
-                    {cards.map((card, index) => (
-                        <TrelloCard key={card.id} id={card.id} text={card.text} index={index} />
-                    ))}
-                    <TrelloActionButton laneID={laneID} />
-                    {provided.placeholder}
-                </div>
-
+                                {cards.map((card, index) => (
+                                    <TrelloCard
+                                        key={card.id}
+                                        text={card.text}
+                                        id={card.id}
+                                        index={index}
+                                        laneID={laneID}
+                                    />
+                                ))}
+                                {provided.placeholder}
+                                <TrelloActionButton laneID={laneID} />
+                            </div>
+                        )}
+                    </Droppable>
+                </LaneContainer>
             )}
-        </Droppable>
+        </Draggable>
+    );
+};
 
-    )
-}
-
-const styles = {
-    container: {
-        backgroundColor: "#e3e3e3",
-        borderRadius: "3px",
-        margin: "5px 5px",
-        position: "relative",
-        padding: "10px",
-        display: [
-            "-webkit-inline-box",
-            "-webkit-inline-flex",
-            "-ms-inline-flexbox",
-            "inline-flex"
-        ],
-        height: "auto",
-        maxHeight: "90%",
-        WebkitFlexDirection: "column",
-        msFlexDirection: "column",
-        flexDirection: "column",
-
-    }
-}
-
-export default TrelloLane;
+export default Trellolane;
