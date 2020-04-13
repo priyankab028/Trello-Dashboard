@@ -33,7 +33,9 @@ export class App extends Component {
     const { lanes } = this.props
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <h2>Hello Youtube</h2>
+        <div className="wrapperHEader">
+          <h2>Trello Dashboard</h2>
+        </div>
         <Droppable droppableId="all-lanes" direction="horizontal" type="lane">
           {provided => (
             <MainWrapper

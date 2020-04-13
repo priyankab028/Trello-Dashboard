@@ -25,3 +25,9 @@ body {
     color: #333;
     border: 0
 }
+.wrapperHEader{
+  widows: 98%;
+  padding: 1%;
+  background: #fff;
+  margin-bottom:16px
+}

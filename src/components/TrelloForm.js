@@ -6,27 +6,23 @@ import Card from "@material-ui/core/Card";
 import Button from "@material-ui/core/Button";
 import CloseIcon from '@material-ui/icons/Close';
 
+const TrelloForm = React.memo(
+    ({ lane, text = "", onChange, closeForm, children }) => {
+        const placeholder = lane
+            ? "Enter lane title..."
+            : "Enter a title for this card...";
 
-const TrelloForm = props => {
-    const { list, text = "", setText, actionButtonClicked, closeForm } = props;
+        const Container = styled.div`
+      width: 300px;
+      margin-bottom: 8px;
+    `;
 
-    const placeholder = list
-        ? "Enter list title..."
-        : "Enter a title for this card...";
-
-    const buttonTitle = "Save";
-
-    const Container = styled.div`
-    width: ${list ? "300px" : "100%"};
-    margin-bottom: 8px;
-  `;
-
-    const StyledCard = styled(Card)`
+        const StyledCard = styled(Card)`
     min-height: 85px;
     padding: 6px 8px 2px;
   `;
 
-    const StyledTextArea = styled(Textarea)`
+        const StyledTextArea = styled(Textarea)`
     resize: none;
     width: 100%;
     overflow: hidden;
@@ -34,47 +30,43 @@ const TrelloForm = props => {
     border: none;
   `;
 
-    const StyledButton = styled(Button)`
+        const StyledButton = styled(Button)`
     && {
       color: white;
       background: #5aac44;
     }
   `;
 
-    const ButtonContainer = styled.div`
+        const ButtonContainer = styled.div`
     margin-top: 8px;
     display: flex;
     align-items: center;
     margin-left: 8px;
   `;
 
-    const StyledIcon = styled(Icon)`
+        const StyledIcon = styled(Icon)`
     margin-left: 8px;
     cursor: pointer;
   `;
 
-    return (
-        <Container>
-            <StyledCard>
-                <StyledTextArea
-                    placeholder={placeholder}
-                    autoFocus
-                    value={text}
-                    onChange={e => setText(e.target.value)}
-                    onBlur={closeForm}
-                />
-            </StyledCard>
-            <ButtonContainer>
-                <StyledButton
-                    variant="contained"
-                    children={buttonTitle}
-                    onMouseDown={actionButtonClicked}
-                />
-
-                <StyledIcon onMouseDown={closeForm}><CloseIcon fontSize="small" /></StyledIcon>
-            </ButtonContainer>
-        </Container>
-    );
-};
+        return (
+            <Container>
+                <StyledCard>
+                    <StyledTextArea
+                        placeholder={placeholder}
+                        autoFocus
+                        value={text}
+                        onChange={e => onChange(e)}
+                        onBlur={closeForm}
+                    />
+                </StyledCard>
+                <ButtonContainer>
+                    {children}
+                    <StyledIcon onMouseDown={closeForm}><CloseIcon fontSize="small" /></StyledIcon>
+                </ButtonContainer>
+            </Container>
+        );
+    }
+);
 
 export default TrelloForm;

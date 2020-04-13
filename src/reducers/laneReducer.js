@@ -6,40 +6,40 @@ let cardID = 6;
 
 const initialState = [
   {
-    title: "Last Episode",
+    title: "Lane One",
     id: `lane-${0}`,
     cards: [
       {
         id: `card-${0}`,
-        text: "we created a static lane and a static card"
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       },
       {
         id: `card-${1}`,
-        text: "we used a mix between material UI React and styled components"
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       }
     ]
   },
   {
-    title: "This Episode",
+    title: "Lane Two",
     id: `lane-${1}`,
     cards: [
       {
         id: `card-${2}`,
-        text: "we will create our first reducer"
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       },
       {
         id: `card-${3}`,
-        text: "and render many cards on our lane with static data"
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       },
       {
         id: `card-${4}`,
         text:
-          "we will also make some little changes I forgot in the last episode (link tags for roboto font and icons,..)"
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       },
       {
         id: `card-${5}`,
         text:
-          "we will also make some little changes I forgot in the last episode (link tags for roboto font and icons,..)"
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       }
     ]
   }
@@ -131,6 +131,18 @@ const laneReducer = (state = initialState, action) => {
           return { ...lane, cards: newCards };
         }
         return lane;
+      });
+    }
+
+    case CONSTANTS.DELETE_CARD: {
+      const { id, laneID } = action.payload;
+      return state.map(lane => {
+        if (lane.id === laneID) {
+          const newCards = lane.cards.filter(card => card.id !== id);
+          return { ...lane, cards: newCards };
+        } else {
+          return lane;
+        }
       });
     }
 

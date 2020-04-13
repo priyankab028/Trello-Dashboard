@@ -9,6 +9,9 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { addLane, addCard } from "../actions";
 import styled from "styled-components";
+import TrelloForm from "./TrelloForm";
+import TrelloOpenForm from "./TrelloOpenForm";
+import TrelloButton from "./TrelloButton";
 
 export class TrelloActionButton extends Component {
     state = {
@@ -56,7 +59,7 @@ export class TrelloActionButton extends Component {
             dispatch(addCard(laneID, text));
         }
     };
-    renderAddButton = () => {
+    renderOpenForm = () => {
         const { lane } = this.props;
 
         const buttonText = lane ? "Add another lane" : "Add another card";
@@ -87,80 +90,25 @@ export class TrelloActionButton extends Component {
         );
     };
 
-    renderForm = () => {
-        const { lane } = this.props;
-
-        const placeholder = lane
-            ? "Enter lane title..."
-            : "Enter a title for this card...";
-
-        const buttonTitle = lane ? "Add lane" : "Add Card";
-
-        const Container = styled.div`
-      width: ${lane ? "300px" : "100%"};
-    `;
-
-        const StyledCard = styled(Card)`
-      min-height: 85px;
-      padding: 6px 8px 2px;
-    `;
-
-        const StyledTextArea = styled(Textarea)`
-      resize: none;
-      width: 100%;
-      overflow: hidden;
-      outline: none;
-      border: none;
-    `;
-
-        const StyledButton = styled(Button)`
-      && {
-        color: white;
-        background: #5aac44;
-      }
-    `;
-
-        const ButtonContainer = styled.div`
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      margin-left: 8px;
-    `;
-
-        const StyledIcon = styled(Icon)`
-      margin-left: 8px;
-      cursor: pointer;
-    `;
-
-        return (
-            <Container>
-                <StyledCard>
-                    <StyledTextArea
-                        placeholder={placeholder}
-                        autoFocus
-                        onBlur={this.closeForm}
-                        value={this.state.text}
-                        onChange={this.handleInputChange}
-                    />
-                </StyledCard>
-                <ButtonContainer>
-                    <StyledButton
-                        onMouseDown={lane ? this.handleAddlane : this.handleAddCard}
-                        variant="contained"
-                        children={buttonTitle}
-                    />
-
-                    <StyledIcon onClick={this.closeForm}><CloseIcon /></StyledIcon>
-                </ButtonContainer>
-            </Container>
-        );
-    };
-
-
     render() {
-        return this.state.formOpen ? this.renderForm() : this.renderAddButton();
+        const { text } = this.state;
+        const { lane } = this.props;
+        return this.state.formOpen ? (
+            <TrelloForm
+                text={text}
+                onChange={this.handleInputChange}
+                closeForm={this.closeForm}
+            >
+                <TrelloButton onClick={lane ? this.handleAddlane : this.handleAddCard}>
+                    {lane ? "Add lane" : "Add Card"}
+                </TrelloButton>
+            </TrelloForm>
+        ) : (
+                <TrelloOpenForm lane={lane} onClick={this.openForm}>
+                    {lane ? "Add another lane" : "Add another card"}
+                </TrelloOpenForm>
+            );
     }
 }
-
 
 export default connect()(TrelloActionButton);

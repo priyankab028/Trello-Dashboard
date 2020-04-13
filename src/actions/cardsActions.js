@@ -12,3 +12,10 @@ export const editCard = (id, laneID, newText) => {
         payload: { id, laneID, newText }
     };
 };
+
+export const deleteCard = (id, laneID) => {
+    return {
+        type: CONSTANTS.DELETE_CARD,
+        payload: { id, laneID }
+    };
+};
