@@ -99,7 +99,7 @@ export class TrelloActionButton extends Component {
                 onChange={this.handleInputChange}
                 closeForm={this.closeForm}
             >
-                <TrelloButton onClick={lane ? this.handleAddlane : this.handleAddCard}>
+                <TrelloButton onClick={lane ? this.handleAddLane : this.handleAddCard}>
                     {lane ? "Add lane" : "Add Card"}
                 </TrelloButton>
             </TrelloForm>
